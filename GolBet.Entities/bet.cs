@@ -19,4 +19,8 @@ public class Bet : AuditableEntity
     public int MatchId { get; set; }
 
     public Match Match { get; set; } = null!;
+
+    public string UserId { get; set; } = null!;
+
+    public AppUser User { get; set; } = null!;
 }
