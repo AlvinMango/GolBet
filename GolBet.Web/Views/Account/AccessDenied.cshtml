@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Acceso denegado";
+}
+
+<div class="container py-5">
+    <div class="text-center">
+        <h1 class="text-danger">Acceso denegado</h1>
+
+        <p class="lead">
+            No tienes permisos para acceder a esta página.
+        </p>
+
+        <a asp-controller="Matches"
+           asp-action="Index"
+           class="btn btn-primary">
+            Volver a los partidos
+        </a>
+    </div>
+</div>

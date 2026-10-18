@@ -1,9 +1,11 @@
 ﻿using GolBet.Services.DTOs;
 using GolBet.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GolBet.Web.Controllers;
 
+[Authorize]
 public class TeamsController : Controller
 {
     private readonly ITeamService _teamService;
