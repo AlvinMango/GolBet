@@ -1,11 +1,13 @@
 ﻿using GolBet.Entities.Enums;
 using GolBet.Services.DTOs;
 using GolBet.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GolBet.Web.Controllers;
 
+[Authorize]
 public class MatchesController : Controller
 {
     private readonly IMatchService _matchService;
@@ -21,11 +23,18 @@ public class MatchesController : Controller
 
     // GET /Matches
     // GET /Matches?status=Scheduled
-    public async Task<IActionResult> Index(MatchStatus? status)
+    // GET /Matches?search=nacional
+    // GET /Matches?status=Scheduled&search=nacional
+    public async Task<IActionResult> Index(
+        MatchStatus? status,
+        string? search)
     {
         ViewBag.CurrentStatus = status;
+        ViewBag.CurrentSearch = search;
 
-        var board = await _matchService.GetBoardAsync(status);
+        var board = await _matchService.GetBoardAsync(
+            status,
+            search);
 
         return View(board);
     }

@@ -5,6 +5,7 @@
 @{
     ViewData["Title"] = "Partidos";
     var current = (MatchStatus?)ViewBag.CurrentStatus;
+    var currentSearch = (string?)ViewBag.CurrentSearch;
 }
 
 <div class="container py-4">
@@ -24,28 +25,59 @@
 
     </div>
 
+    <!-- Buscador -->
+    <form asp-action="Index" method="get" class="mb-4">
+
+        <div class="input-group">
+
+            <input type="text"
+                   name="search"
+                   value="@currentSearch"
+                   class="form-control"
+                   placeholder="Buscar por equipo..."
+                   aria-label="Buscar por equipo" />
+
+            @if (current.HasValue)
+            {
+                <input type="hidden"
+                       name="status"
+                       value="@current" />
+            }
+
+            <button type="submit" class="btn btn-success">
+                Buscar
+            </button>
+
+        </div>
+
+    </form>
+
     <!-- Filtros -->
     <div class="d-flex gap-2 flex-wrap mb-4">
 
         <a asp-action="Index"
+           asp-route-search="@currentSearch"
            class="btn btn-sm @(current is null ? "btn-success" : "btn-outline-success")">
             Todos
         </a>
 
         <a asp-action="Index"
            asp-route-status="@MatchStatus.Scheduled"
+           asp-route-search="@currentSearch"
            class="btn btn-sm @(current == MatchStatus.Scheduled ? "btn-success" : "btn-outline-success")">
             Programados
         </a>
 
         <a asp-action="Index"
            asp-route-status="@MatchStatus.InProgress"
+           asp-route-search="@currentSearch"
            class="btn btn-sm @(current == MatchStatus.InProgress ? "btn-success" : "btn-outline-success")">
             En juego
         </a>
 
         <a asp-action="Index"
            asp-route-status="@MatchStatus.Finished"
+           asp-route-search="@currentSearch"
            class="btn btn-sm @(current == MatchStatus.Finished ? "btn-success" : "btn-outline-success")">
             Finalizados
         </a>
@@ -55,7 +87,27 @@
     @if (!Model.Any())
     {
         <div class="alert alert-info">
-            No hay partidos para el filtro seleccionado.
+
+            No se encontraron partidos
+            @if (!string.IsNullOrWhiteSpace(currentSearch))
+            {
+                <strong>para "@currentSearch"</strong>
+            }
+
+            @if (current.HasValue)
+            {
+                <span>con el filtro seleccionado</span>
+            }
+
+            .
+
+            <div class="mt-2">
+                <a asp-action="Index"
+                   class="btn btn-sm btn-outline-primary">
+                    Ver todos los partidos
+                </a>
+            </div>
+
         </div>
     }
     else
